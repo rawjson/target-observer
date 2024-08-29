@@ -1,8 +1,21 @@
 {
     "name": "use-in-view",
-    "private": true,
+    "private": false,
     "version": "1.0.0",
     "type": "module",
+    "license": "ISC",
+    "author": {
+        "name": "Nav B.",
+        "url": "https://github.com/rawjson"
+    },
+    "browser": "./dist/use-in-view.js",
+    "files": [
+        "./dist/*"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rawjson/use-in-view.git"
+    },
     "scripts": {
         "dev": "vite",
         "build": "tsc -b && vite build",
@@ -14,12 +27,10 @@
         "inView",
         "use in view",
         "in view",
-        "intersection observer"
+        "intersection observer",
+        "react",
+        "hook"
     ],
-    "dependencies": {
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
-    },
     "devDependencies": {
         "@eslint/js": "^9.9.0",
         "@types/node": "^22.5.1",
@@ -30,9 +41,16 @@
         "eslint-plugin-react-hooks": "^5.1.0-rc.0",
         "eslint-plugin-react-refresh": "^0.4.9",
         "globals": "^15.9.0",
+        "react-dom": "^18.3.1",
         "typescript": "^5.5.3",
         "typescript-eslint": "^8.0.1",
         "vite": "^5.4.1",
         "vite-plugin-dts": "^4.0.3"
+    },
+    "dependencies": {
+        "react": "^18.3.1"
+    },
+    "peerDependencies": {
+        "react": "^18"
     }
 }
