@@ -1,1 +1,2 @@
-export const message = 'Hello World!'
+export const message: string = 'Hello World!'
+export * from './example'
