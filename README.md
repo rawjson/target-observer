@@ -1,50 +1,80 @@
-# React + TypeScript + Vite
+The useInView hook tracks when a target element enters the viewport, making it ideal for dynamically updating the styling of items or chapters in a table of contents on a documentation site.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Example:
 
-Currently, two official plugins are available:
+```ts
+import {
+    useInView,
+    InViewProvider,
+    ObserveZone,
+    Target
+} from '@rawjson/use-in-view'
+import clsx from 'clsx'
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+const targetIds = [
+    'section#1',
+    'section#2',
+    'section#3',
+    'section#4',
+    'section#5'
+]
+export default function Example() {
+    return (
+        <InViewProvider targetIds={targetIds}>
+            <div className='h-screen w-full'>
+                <div className='max-w-7xl mx-auto w-full p-5 flex gap-10'>
+                    <Navigation />
+                    {/* must use position:relative in parent for ObserveZone to work */}
+                    <div className='relative w-full space-y-5'>
+                        {/* add this invisible component to track the target */}
+                        <ObserveZone
+                            // optional height property, default is 50vh
+                            height='70vh'
+                            // optional className property, use only for testing
+                            className='ring-4 ring-offset-8 ring-red-500/20'
+                        />
 
-## Expanding the ESLint configuration
+                        {targetIds.map((targetId) => (
+                            <Target
+                                key={targetId}
+                                // must specify the id property for target to work
+                                id={targetId}
+                                // the html element you want to render
+                                as='section'
+                                // add styling to your target
+                                className='h-[90vh] border-4 p-5 w-full'
+                                // the height in percent of observing zone to trigger inView state
+                                // default is 0.5 (50 percent)
+                                entryThreshold={0.3}
+                            >
+                                Target: {targetId}
+                            </Target>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </InViewProvider>
+    )
+}
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+function Navigation() {
+    const inView = useInView() // returns a record with boolean values
+    return (
+        <div className='sticky top-10 h-screen'>
+            <ul className='space-y-4'>
+                {targetIds.map((targetId) => (
+                    <li
+                        key={targetId}
+                        className={clsx('text-center w-32', {
+                            'font-bold py-1 bg-red-500 text-white':
+                                inView[targetId]
+                        })}
+                    >
+                        <a href={'#' + targetId}>{targetId}</a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )
+}
 ```
