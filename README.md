@@ -14,8 +14,9 @@ Checkout the demo [here](https://use-in-view-example.vercel.app/).
 
 The `InViewProvider` component is a wrapper for tracking the visibility of multiple `Target` components within the viewport. The component monitors when each target enters or exits the viewport, enabling you to manage and respond to the in-view state of these elements within your application.
 
-| Property | Default | Description |
-| `targetIds` | - | The `targetIds` property is an array of strings that specifies the IDs of the Target components to be tracked by the InViewProvider. Each string in the array corresponds to the unique id of a Target component, allowing the InViewProvider to monitor when these elements enter or exit the viewport. |
+| Property    | Default | Description                                                                                                                                                                                                                                                                                              |
+| ----------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `targetIds` | -       | The `targetIds` property is an array of strings that specifies the IDs of the Target components to be tracked by the InViewProvider. Each string in the array corresponds to the unique id of a Target component, allowing the InViewProvider to monitor when these elements enter or exit the viewport. |
 
 ### useInView
 
