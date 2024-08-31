@@ -6,7 +6,7 @@ It provides a set of tools including the `useInView` hook, `InViewProvider`, `Ta
 
 With `Target Observer`, you can easily trigger animations, lazy load content, or handle visibility-based logic in your application. The library is optimized for performance and ease of use, making it a robust solution for building responsive and dynamic user interfaces.
 
-Checkout the demo [here](https://use-in-view-example.vercel.app/).
+Checkout the demo [here](https://target-observer.vercel.app).
 
 ## Commponent API
 
