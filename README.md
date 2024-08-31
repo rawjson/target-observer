@@ -46,13 +46,8 @@ The component’s visibility state can be used to trigger actions, such as anima
 Example:
 
 ```ts
-import {
-    useInView,
-    InViewProvider,
-    ObserveZone,
-    Target
-} from '@rawjson/target-observer'
 import clsx from 'clsx'
+import { useInView, InViewProvider, ObserveZone, Target } from 'target-observer'
 
 const targetIds = [
     'section#1',
