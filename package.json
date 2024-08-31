@@ -1,5 +1,6 @@
 {
-    "name": "@rawjson/use-in-view",
+    "name": "target-observer",
+    "description": "With Target Observer, you can easily trigger animations, lazy load content, or handle visibility-based logic in your application.",
     "private": false,
     "version": "1.0.0",
     "type": "module",
