@@ -6,7 +6,7 @@ It provides a set of tools including the `useInView` hook, `InViewProvider`, `Ta
 
 With `Target Observer`, you can easily trigger animations, lazy load content, or handle visibility-based logic in your application. The library is optimized for performance and ease of use, making it a robust solution for building responsive and dynamic user interfaces.
 
-Checkout the demo [here](https://target-observer.vercel.app).
+Checkout the demo [here](https://target-observer-demo.vercel.app/).
 
 ## Commponent API
 
@@ -22,7 +22,7 @@ The `InViewProvider` component is a wrapper for tracking the visibility of multi
 
 The useInView hook tracks when a target element enters the viewport, making it ideal for dynamically updating the styling of items or chapters in a table of contents on a documentation site.
 
-### `ObserveZone`
+### ObserveZone
 
 The `ObserveZone` is an invisible component that defines a specific area within which visibility of child elements is tracked.
 
@@ -31,7 +31,7 @@ The `ObserveZone` is an invisible component that defines a specific area within 
 | `height`    | 50vh    | An optional property for adjusting the observing area's height.                    |
 | `className` | -       | An optional property for defining class names. Use only for testing the component. |
 
-### `Target`
+### Target
 
 The `Target` component represents an element whose visibility is tracked within the `ObserveZone`. Each `Target` should have a unique ID that matches an entry in the `targetIds` array provided to the `InViewProvider`.
 
