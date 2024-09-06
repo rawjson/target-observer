@@ -44,9 +44,9 @@ export function Target({
         function checkIfInsideViewport() {
             const elementBounds = ref.current.getBoundingClientRect()
             const elementTop = elementBounds.top
-            const halfRootHeight = rootBottom * entryThreshold
+            const rootHeightToObserve = rootBottom * entryThreshold
 
-            if (elementTop < halfRootHeight) {
+            if (elementTop < rootHeightToObserve) {
                 setInView((p) => {
                     Object.keys(p).forEach((v) => (p[v] = false))
 

@@ -1,5 +1,17 @@
 # Target Observer
 
+## Table of Contents
+
+-   [Introduction](#target-observer)
+-   [Component API](#component-api)
+    -   [InViewProvider](#inviewprovider)
+    -   [useInView](#useinview)
+    -   [ObserveZone](#observezone)
+    -   [Target](#target)
+-   [Examples](#examples)
+    -   [React + Css](#react-&-css)
+    -   [React + Tailwind Css](#react-tailwind-css)
+
 **Target Observer** is designed to help developers efficiently monitor and manage the visibility of elements within the viewport.
 
 It provides a set of tools including the `useInView` hook, `InViewProvider`, `Target`, and `ObserveZone` components. These tools enable seamless tracking of when specific elements, identified as "targets" enter or exit the viewport.
@@ -8,15 +20,16 @@ With `Target Observer`, you can easily trigger animations, lazy load content, or
 
 Checkout the demo [here](https://target-observer-demo.vercel.app/).
 
-## Commponent API
+## Component API
 
 ### InViewProvider
 
 The `InViewProvider` component is a wrapper for tracking the visibility of multiple `Target` components within the viewport. The component monitors when each target enters or exits the viewport, enabling you to manage and respond to the in-view state of these elements within your application.
 
-| Property    | Default | Description                                                                                                                                                                                                                                                                                              |
-| ----------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `targetIds` | -       | The `targetIds` property is an array of strings that specifies the IDs of the Target components to be tracked by the InViewProvider. Each string in the array corresponds to the unique id of a Target component, allowing the InViewProvider to monitor when these elements enter or exit the viewport. |
+| Property                   | Default | Description                                                                                                                                                                  |
+| -------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `targetIds`                | -       | An array of strings that specifies the IDs of the Target components to be tracked by the InViewProvider.                                                                     |
+| `firstTargetActiveOnMount` | true    | By default, the first target is activated when the component mounts. If set to false, it will only update once the user starts scrolling and the target enters the viewport. |
 
 ### useInView
 
@@ -43,9 +56,125 @@ The component’s visibility state can be used to trigger actions, such as anima
 | `as`             | div     | The element or component the Target should render as.                                                                                                                                                                            |
 | `entryThreshold` | 0.5     | The percentage of observing zone height that should be used to trigger the observer. The target element when inside this area will update the inView property to true. Accepts value between 0 and 1. Min is 0.1 and Max is 0.9. |
 
-Example:
+## Examples:
 
-```ts
+### React with CSS
+
+```tsx
+import { useInView, InViewProvider, ObserveZone, Target } from 'target-observer'
+
+const targetIds = [
+    'section#1',
+    'section#2',
+    'section#3',
+    'section#4',
+    'section#5'
+]
+export default function Example() {
+    return (
+        <InViewProvider targetIds={targetIds}>
+            <div style={{ height: '100vh', width: '100%' }}>
+                <div
+                    style={{
+                        maxWidth: '80rem',
+                        width: '100%',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        padding: '1.25rem',
+                        display: 'flex',
+                        gap: '2.5rem'
+                    }}
+                >
+                    <Navigation />
+
+                    {/* must use position:relative in parent for ObserveZone to work */}
+                    <div
+                        style={{ position: 'relative', width: '100%' }}
+                        className='target'
+                    >
+                        {/* add this invisible component to track the target */}
+                        <ObserveZone
+                            // optional height property, default is 50vh
+                            height='70vh'
+                            // optional className property, use only for testing
+                            className='observer'
+                        />
+
+                        {targetIds.map((targetId) => (
+                            <Target
+                                key={targetId}
+                                // must specify the id property for target to work
+                                id={targetId}
+                                // the html element you want to render
+                                as='section'
+                                // add styling to your target
+                                style={{
+                                    height: '90vh',
+                                    borderWidth: '4px',
+                                    borderColor: '#e5e7eb',
+                                    padding: '1.25rem'
+                                }}
+                                // the height in percent of observing zone to trigger inView state
+                                // default is 0.5 (50 percent)
+                                entryThreshold={0.3}
+                            >
+                                Target: {targetId}
+                            </Target>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </InViewProvider>
+    )
+}
+
+function Navigation() {
+    const inView = useInView() // returns a record with boolean values
+
+    return (
+        <div style={{ position: 'sticky', top: '2.5rem', height: '100vh' }}>
+            <ul className='list'>
+                {targetIds.map((targetId) => {
+                    return (
+                        <li
+                            key={targetId}
+                            style={{
+                                width: '8rem',
+                                textAlign: 'center',
+                                ...(inView[targetId] && {
+                                    fontWeight: 700,
+                                    padding: '0.25rem 0 0.25rem 0',
+                                    backgroundColor: '#ef4444',
+                                    color: 'white'
+                                })
+                            }}
+                        >
+                            <a href={'#' + targetId}>{targetId}</a>
+                        </li>
+                    )
+                })}
+            </ul>
+        </div>
+    )
+}
+```
+
+```css
+li:not(:first-child):not(:last-child),
+section:not(:first-child):not(:last-child) {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.observer {
+    outline: 4px solid rgba(239, 68, 68, 0.2);
+    outline-offset: 8px;
+}
+```
+
+### React with Tailwind CSS
+
+```tsx
 import clsx from 'clsx'
 import { useInView, InViewProvider, ObserveZone, Target } from 'target-observer'
 
@@ -116,3 +245,12 @@ function Navigation() {
     )
 }
 ```
+
+## Issues
+
+Please file an issue for bugs, missing documentation, or unexpected behavior.
+Don't hesitate to make a PR for any issue.
+
+[File an issue](https://github.com/rawjson/target-observer/issues)
+
+## Release Notes
