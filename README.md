@@ -9,8 +9,8 @@
     -   [ObserveZone](#observezone)
     -   [Target](#target)
 -   [Examples](#examples)
-    -   [React + Css](#react-&-css)
-    -   [React + Tailwind Css](#react-tailwind-css)
+    -   [React + Css](#react-with-css)
+    -   [React + Tailwind Css](#react-with-tailwind-css)
 
 **Target Observer** is designed to help developers efficiently monitor and manage the visibility of elements within the viewport.
 
@@ -61,6 +61,7 @@ The component’s visibility state can be used to trigger actions, such as anima
 ### React with CSS
 
 ```tsx
+import clsx from 'clsx'
 import { useInView, InViewProvider, ObserveZone, Target } from 'target-observer'
 
 const targetIds = [
@@ -73,55 +74,35 @@ const targetIds = [
 export default function Example() {
     return (
         <InViewProvider targetIds={targetIds}>
-            <div style={{ height: '100vh', width: '100%' }}>
-                <div
-                    style={{
-                        maxWidth: '80rem',
-                        width: '100%',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        padding: '1.25rem',
-                        display: 'flex',
-                        gap: '2.5rem'
-                    }}
-                >
-                    <Navigation />
+            <div className='container'>
+                <Navigation />
 
-                    {/* must use position:relative in parent for ObserveZone to work */}
-                    <div
-                        style={{ position: 'relative', width: '100%' }}
-                        className='target'
-                    >
-                        {/* add this invisible component to track the target */}
-                        <ObserveZone
-                            // optional height property, default is 50vh
-                            height='70vh'
-                            // optional className property, use only for testing
-                            className='observer'
-                        />
+                {/* must use position:relative in parent for ObserveZone to work */}
+                <div className='target-wrapper'>
+                    {/* add this invisible component to track the target */}
+                    <ObserveZone
+                        // optional height property, default is 50vh
+                        height='70vh'
+                        // optional className property, use only for testing
+                        className='observer'
+                    />
 
-                        {targetIds.map((targetId) => (
-                            <Target
-                                key={targetId}
-                                // must specify the id property for target to work
-                                id={targetId}
-                                // the html element you want to render
-                                as='section'
-                                // add styling to your target
-                                style={{
-                                    height: '90vh',
-                                    borderWidth: '4px',
-                                    borderColor: '#e5e7eb',
-                                    padding: '1.25rem'
-                                }}
-                                // the height in percent of observing zone to trigger inView state
-                                // default is 0.5 (50 percent)
-                                entryThreshold={0.3}
-                            >
-                                Target: {targetId}
-                            </Target>
-                        ))}
-                    </div>
+                    {targetIds.map((targetId) => (
+                        <Target
+                            key={targetId}
+                            // must specify the id property for target to work
+                            id={targetId}
+                            // the html element you want to render
+                            as='section'
+                            // add styling to your target
+                            className='target'
+                            // the height in percent of observing zone to trigger inView state
+                            // default is 0.5 (50 percent)
+                            entryThreshold={0.3}
+                        >
+                            Target: {targetId}
+                        </Target>
+                    ))}
                 </div>
             </div>
         </InViewProvider>
@@ -132,38 +113,81 @@ function Navigation() {
     const inView = useInView() // returns a record with boolean values
 
     return (
-        <div style={{ position: 'sticky', top: '2.5rem', height: '100vh' }}>
-            <ul className='list'>
+        <nav>
+            <ul>
                 {targetIds.map((targetId) => {
                     return (
                         <li
                             key={targetId}
-                            style={{
-                                width: '8rem',
-                                textAlign: 'center',
-                                ...(inView[targetId] && {
-                                    fontWeight: 700,
-                                    padding: '0.25rem 0 0.25rem 0',
-                                    backgroundColor: '#ef4444',
-                                    color: 'white'
-                                })
-                            }}
+                            className={clsx({
+                                'list-active': inView[targetId]
+                            })}
                         >
                             <a href={'#' + targetId}>{targetId}</a>
                         </li>
                     )
                 })}
             </ul>
-        </div>
+        </nav>
     )
 }
 ```
 
 ```css
+nav {
+    position: sticky;
+    top: 2.5rem;
+    height: 100vh;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    width: 8rem;
+    text-align: center;
+    color: black;
+}
+
+a {
+    text-decoration: none;
+    font-size: 18px;
+    color: inherit;
+}
+
 li:not(:first-child):not(:last-child),
 section:not(:first-child):not(:last-child) {
     margin-top: 16px;
     margin-bottom: 16px;
+}
+
+.list-active {
+    font-weight: 700;
+    padding: 0.25rem 0 0.25rem 0;
+    background-color: #ef4444;
+    color: white;
+}
+
+.container {
+    max-width: 80rem;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.25rem;
+    display: flex;
+    gap: 2.5rem;
+}
+
+.target-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.target {
+    height: 90vh;
+    border: 4px solid #e5e7eb;
+    padding: 1.25rem;
 }
 
 .observer {
