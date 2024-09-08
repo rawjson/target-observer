@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.1 - 2024-09-08
+
+### Fixed
+
+-   [#2](https://github.com/rawjson/target-observer/issues/2) inView not updating if preceding element leaves viewport
+
 ## v1.1.0 - 2024-09-06
 
 ### Added
@@ -22,7 +28,5 @@
 -   Updated documentation
 
 ## v1.0.0 - 2024-09-01
-
-### Added
 
 -   _First release_
