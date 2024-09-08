@@ -40,18 +40,33 @@ export function Target({
 
         const rootBounds = rootRef.current.getBoundingClientRect()
         const rootBottom = rootBounds.bottom
+        const rootTop = rootBounds.top
 
         function checkIfInsideViewport() {
             const elementBounds = ref.current.getBoundingClientRect()
             const elementTop = elementBounds.top
+            const elementBottom = elementBounds.bottom
+
             const rootHeightToObserve = rootBottom * entryThreshold
 
+            // add the target in view while removing other targets
             if (elementTop < rootHeightToObserve) {
                 setInView((p) => {
                     Object.keys(p).forEach((v) => (p[v] = false))
 
-                    return { ...p, [id]: true }
+                    return {
+                        ...p,
+                        [id]: true
+                    }
                 })
+            }
+
+            // removes the target from view when it is outside the observe zone
+            if (elementBottom < rootTop) {
+                setInView((p) => ({
+                    ...p,
+                    [id]: false
+                }))
             }
         }
 
