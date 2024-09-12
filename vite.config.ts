@@ -14,10 +14,11 @@ export default defineConfig({
             name: 'UseInView'
         },
         rollupOptions: {
-            external: ['react'],
+            external: ['react', 'react-dom'],
             output: {
                 globals: {
-                    React: 'react'
+                    react: 'React',
+                    'react-dom': 'ReactDom'
                 }
             }
         }

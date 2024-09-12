@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.2 - 2024-09-12
+
+### Changed
+
+-   Rollup options to make react and react-dom external
+
 ## v1.1.1 - 2024-09-08
 
 ### Fixed
